@@ -38,7 +38,7 @@ cd PorinPredict
 conda env create -n PorinPredict --file PorinPredict.yaml
 
 conda activate PorinPredict
-python /path/to/PorinPredict.py --version
+/path/to/PorinPredict.py --version
 ```
 For a faster installation, use [mamba](https://github.com/mamba-org/mamba) instead of conda.
 
@@ -46,14 +46,18 @@ For a faster installation, use [mamba](https://github.com/mamba-org/mamba) inste
 
 ```
 conda activate PorinPredict
-python /path/to/PorinPredict.py -i /path/to/genome.fasta -o /path/to/output_directory/ [other options]
+/path/to/PorinPredict.py -i /path/to/genome.fasta -o /path/to/output_directory/ [other options]
 ```
 
 To analyze multiple assemblies and create a summary table, you can use a for loop in combination with the "--summarize" flag:
 ```
-for i in /path/to/input_directory/*.fasta; do python /path/to/PorinPredict.py -i $i -o /path/to/output_directory/ --summarize ; done
+for i in /path/to/input_directory/*.fasta; do /path/to/PorinPredict.py -i $i -o /path/to/output_directory/ --summarize ; done
 ```
 
+Assemblies for a test run are included in PorinPredict/test_assemblies:
+```
+for i in ./test_assemblies/*.fasta; do ./PorinPredict.py -i $i -o /test_result --summarize ; done
+```
 
 ## Output Files
 
