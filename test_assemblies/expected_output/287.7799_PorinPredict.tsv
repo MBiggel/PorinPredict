@@ -1,0 +1,2 @@
+"Assembly ID"	"oprD promoter completeness"	"OprD variant hit"	"OprD coding region"	"variant -- aligned query length/subject length *100 -- subject identity"	"Missense/nonsense mutation"	"PorinPredict classification"
+287.7799	"complete_100%"	"OprD_1"	"intact - missense mutation"	"OprD_1--100--99.8%"	"S278P"	"OprD intact but rare AA substitution"

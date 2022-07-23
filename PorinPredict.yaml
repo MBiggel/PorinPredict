@@ -1,0 +1,16 @@
+name: porinpredict_test
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+  - r
+dependencies:
+  - pandas
+# diamond
+  - diamond=2.0.12
+# BLAST+
+  - blast=2.12.0
+# R and dependencies
+  - r-base
+  - r-dplyr
+  - bioconductor-biostrings=2.62.0
