@@ -27,7 +27,6 @@ or similar tools.
 * R and packages dplyr and Biostrings
 
 PorinPredict expects DIAMOND, BLASTn, and Rscript to be available in $PATH.
-If all requirements are met, PorinPredict can be run without additional installations.
 
 ### Installation of dependencies via conda
 
@@ -68,11 +67,11 @@ Filename | Description
 
 ## Considerations
 
-* PorinPredict relies on high-quality genome assemblies. Before running PorinPredict, we recommend to confirm *Pseudomonas aeruginosa* species affiliation using e.g. [rMLST](https://pubmlst.org/species-id) and to assess the assembly quality using [CheckM](https://github.com/Ecogenomics/CheckM/wiki), [QUAST](http://quast.sourceforge.net/), or similar tools.
+* PorinPredict relies on high-quality genome assemblies. Before running PorinPredict, we recommend to confirm *Pseudomonas aeruginosa* species affiliation using e.g. [rMLST](https://pubmlst.org/species-id) and to assess the assembly quality using [CheckM](https://github.com/Ecogenomics/CheckM/wiki), [QUAST](http://quast.sourceforge.net/), or similar tools. In low-quality assemblies, an absent *oprD* gene may be due to technical reasons such as an insufficient coverage In our study, the following criteria were used to define low-quality assemblies: N50 < 15 kb, assembly length <5.9 Mb, CheckM completeness <97 %, or CheckM contamination >3 %.
 
 * In addition to inactivating mutations in OprD and promoter disruptions, PorinPredict reports missense mutations. Specific amino acid substitutions associated with carbapenem resistance are described in our publication: LINK
 
-* Currently, 15 intact OprD variants are included in the database. With the increasing number of available genomes, the database will be supplemented with additional variants of carbapenem-susceptible isolates.
+* 15 intact OprD variants are currently included in the database. With the increasing number of available genomes, the database will be supplemented with additional variants of carbapenem-susceptible isolates.
 
 ## Citation
 
