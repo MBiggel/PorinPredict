@@ -31,12 +31,12 @@ import datetime
 __version__ = '1.0.0'
 
 def get_arguments(args):
-    parser = argparse.ArgumentParser(usage = "PorinPredict -i </path/to/genome.fasta> -o </path/to/output/directory/> [other options]")
+    parser = argparse.ArgumentParser(usage = "porinpredict -i </path/to/genome.fasta> -o </path/to/output/directory/> [other options]")
     parser.add_argument("-i", "--input", help = "Path to input genome in fasta format", nargs = 1, required = True)
     parser.add_argument("-o", "--outdir", help = "Path to desired outdir directory", nargs = 1, required = True)
     parser.add_argument("--summarize", help = "Summarize results in output folder.", action='store_true')
     parser.add_argument("-t", "--threads", help = "Number of CPU threads", type=int, default = 1)
-    parser.add_argument("-v","--version", action="version", version='PorinPredict v' +  __version__, help="Print version")
+    parser.add_argument("-v","--version", action="version", version='porinpredict v' +  __version__, help="Print version")
 
     args = parser.parse_args()
     return args
@@ -78,11 +78,11 @@ def main(args=None):
         os._exit(0)
 
     # get path to PorinPredict executable and databases
-    PorinPredict_path = os.path.realpath(__file__)
-    PorinPredict_path = os.path.dirname(PorinPredict_path) + "/"
+    porinpredict_path = os.path.realpath(__file__)
+    porinpredict_path = os.path.dirname(porinpredict_path) + "/"
 
-    database_path_diamond = PorinPredict_path + r"/db/PA_OprD"
-    database_path_blastn = PorinPredict_path + r"/db/PA_oprD_promoter_200bp_plus_10.fasta"
+    database_path_diamond = porinpredict_path + r"/db/PA_OprD"
+    database_path_blastn = porinpredict_path + r"/db/PA_oprD_promoter_200bp_plus_10.fasta"
     
     # get prefix and output arguments
     prefix = input.split("/")[-1].strip()
@@ -129,7 +129,7 @@ def main(args=None):
 
     run_diamond(input,temp_dir_diamond,diamond_result,database_path_diamond,prefix,outdir,args.threads)
     run_blastn(input,blast_result,temp_dir_blastn,database_path_blastn,prefix,outdir,args.threads)
-    run_R(blast_result,diamond_result,prefix,outdir,PorinPredict_path)
+    run_R(blast_result,diamond_result,prefix,outdir,porinpredict_path)
     
     if args.summarize == True:
         run_summarize(outdir,prefix)
@@ -201,10 +201,10 @@ def run_blastn(input,blast_result,temp_dir_blastn,database_path_blastn,prefix,ou
     
     return blast_result
     
-def run_R(blast_result,diamond_result,prefix,outdir,PorinPredict_path):
-    logging.info("Running PorinPredict.R")
+def run_R(blast_result,diamond_result,prefix,outdir,porinpredict_path):
+    logging.info("Running porinpredict.R")
     print()
-    script_path = PorinPredict_path + "PorinPredict.R"
+    script_path = porinpredict_path + "porinpredict.R"
     args = [blast_result,diamond_result,prefix,outdir]
     cmd = ["Rscript", script_path] + args
     

@@ -34,26 +34,26 @@ To install required dependencies in a separate [Conda](https://conda.io/docs/ins
 ```
 git clone https://github.com/MBiggel/PorinPredict
 cd PorinPredict
-conda env create -n PorinPredict --file PorinPredict.yaml
+conda env create -n porinpredict --file porinpredict.yaml
 
-conda activate PorinPredict
-/path/to/PorinPredict.py --version
+conda activate porinpredict
+/path/to/porinpredict.py --version
 ```
 For a faster installation, use [mamba](https://github.com/mamba-org/mamba) instead of conda.
 
 ## Run PorinPredict
 
 ```
-conda activate PorinPredict
-/path/to/PorinPredict.py -i /path/to/genome.fasta -o /path/to/output_directory/ [other options]
+conda activate porinpredict
+/path/to/porinpredict.py -i /path/to/genome.fasta -o /path/to/output_directory/ --threads 8
 ```
 
 To analyze multiple assemblies and create a summary table, you can use a for loop in combination with the "--summarize" flag:
 ```
-for i in /path/to/input_directory/*.fasta; do /path/to/PorinPredict.py -i $i -o /path/to/output_directory/ --summarize ; done
+for i in /path/to/input_directory/*.fasta; do /path/to/porinpredict.py -i $i -o /path/to/output_directory/ --summarize ; done
 ```
 
-Assemblies for a test run are included in PorinPredict/test_assemblies:
+Assemblies for a test run are included in the repository folder PorinPredict/test_assemblies:
 ```
 for i in ./test_assemblies/*.fasta; do ./PorinPredict.py -i $i -o test_run --summarize ; done
 ```
@@ -67,7 +67,7 @@ Filename | Description
 
 ## Considerations
 
-* PorinPredict relies on high-quality genome assemblies. Before running PorinPredict, we recommend to confirm *Pseudomonas aeruginosa* species affiliation using e.g. [rMLST](https://pubmlst.org/species-id) and to assess the assembly quality using [CheckM](https://github.com/Ecogenomics/CheckM/wiki), [QUAST](http://quast.sourceforge.net/), or similar tools. In low-quality assemblies, an absent *oprD* gene may be due to technical reasons such as an insufficient coverage. In our study, the following criteria were used to define low-quality assemblies: N50 < 15 kb, assembly length <5.9 Mb, CheckM completeness <97 %, or CheckM contamination >3 %.
+* PorinPredict relies on high-quality genome assemblies. Before running PorinPredict, we recommend to confirm *Pseudomonas aeruginosa* species affiliation using e.g. [rMLST](https://pubmlst.org/species-id) and to assess the assembly quality using [CheckM](https://github.com/Ecogenomics/CheckM/wiki), [QUAST](http://quast.sourceforge.net/), or similar tools. In low-quality assemblies, absence of *oprD* may be caused by technical reasons such as an insufficient coverage. In our study, the following criteria were used to define low-quality assemblies: N50 < 15 kb, assembly length <5.9 Mb, CheckM completeness <97 %, or CheckM contamination >3 %.
 
 * In addition to inactivating mutations in OprD and promoter disruptions, PorinPredict reports missense mutations. Specific amino acid substitutions associated with carbapenem resistance are described in our publication: LINK
 
