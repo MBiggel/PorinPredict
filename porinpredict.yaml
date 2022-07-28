@@ -1,4 +1,4 @@
-name: porinpredict_test
+name: porinpredict
 channels:
   - conda-forge
   - bioconda

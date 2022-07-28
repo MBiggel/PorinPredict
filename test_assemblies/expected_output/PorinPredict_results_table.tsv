@@ -3,4 +3,4 @@ Assembly ID	oprD promoter completeness	OprD variant hit	OprD coding region	varia
 287.7775	complete_100%	OprD_1	premature stop	OprD_1--100--99.8%	W415X	OprD inactivated
 287.7799	complete_100%	OprD_1	intact - missense mutation	OprD_1--100--99.8%	S278P	OprD intact but rare AA substitution
 287.7837	complete_100%	OprD_1	intact - exact match	OprD_1--100--100%		OprD intact
-287.785	complete_100%	OprD_2	incomplete	OprD_2--71.6--100%		OprD inactivated
+287.7850	complete_100%	OprD_2	incomplete	OprD_2--71.6--100%		OprD inactivated

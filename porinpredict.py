@@ -51,24 +51,18 @@ def main(args=None):
         logging.error('WARNING: Diamond could not be found')
         print()
         os._exit(0)
-    else:
-        pass
         
     path = shutil.which("blastn")
     if path is None:
         logging.error('WARNING: Blastn could not be found')
         print()
         os._exit(0)
-    else:
-        pass
         
     path = shutil.which("Rscript")
     if path is None:
         logging.error('WARNING: Rscript could not be found')
         print()
         os._exit(0)
-    else:
-        pass
         
     # Check if input file path is available
     input = args.input[0]
@@ -133,10 +127,7 @@ def main(args=None):
     
     if args.summarize == True:
         run_summarize(outdir,prefix)
-
-    else:
-        pass
-    
+   
     logging.info("Results written to " + outdir + prefix + "_PorinPredict.tsv")
     print()
     
@@ -155,20 +146,14 @@ def run_diamond(input,temp_dir_diamond,diamond_result,database_path_diamond,pref
     if os.stat(diamond_result).st_size == 0:
         with open(diamond_result, "w") as file:
             file.write("missing")          
-    else:
-        pass
     
-    # checking if more than one porin detected
+    # checking if more than one porin detected; keep hit with lowest Evalue
     df_diamond = pd.read_csv(diamond_result, sep = "\t", header=None)
     if df_diamond.count()[0] > 1:
         logging.warning("WARNING: More than one OprD detected, likely representing more than one P. aeruginosa strain in the sample. PorinPredict analyzes only the first hit.")
         print()
-        
-        # Drop additional hits by writing first row to file.
-        df_diamond = df_diamond.loc[1:2]
-    else:
-        pass    
-    
+        df_diamond = df_diamond.sort_values(by = [12], ascending = True).head(1)       
+   
     #add column with prefix
     df_diamond["ID"] = [prefix]
     
@@ -192,7 +177,8 @@ def run_blastn(input,blast_result,temp_dir_blastn,database_path_blastn,prefix,ou
             file.write("missing" + "\t" + prefix + "\n")
     else:        
         # keep hit with lowest Evalue
-        out_blastn = pd.read_csv(blast_result, sep = "\t", header=None).sort_values(by = [13], ascending = True).head(1) # to be checked. make sure not surting by first digit or similar
+        out_blastn = pd.read_csv(blast_result, sep = "\t", header=None).sort_values(by = [13], ascending = True).head(1) 
+        
         # add column with prefix
         out_blastn["ID"] = [prefix]
     
