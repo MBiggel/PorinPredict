@@ -15,7 +15,7 @@ outfile = paste(args[4],args[3],"_PorinPredict.tsv",sep="")
 
 ### Classification OprD CDS
 # Diamond: no hit
-if(df[1,1] == "missing") {
+if(df[1,1] == "no hit") {
   names(df) = c("result_CDS","Assembly")
   df$"Subject ID" = NA
   df$Mutation = NA
@@ -115,9 +115,9 @@ if(df$OprD_complete == TRUE && df$Exact_match == TRUE){
 }}
 
 ### Classification OprD promoter
-if(dfp[1,1] == "missing") {
+if(dfp[1,1] == "no hit") {
   names(dfp) = c("result_promoter","Assembly")
-  df$promoter = "missing"
+  df$promoter = "no hit"
 
   } else {
   names(dfp) = c('qseqid','sseqid','slen','pident','qcovs','length',

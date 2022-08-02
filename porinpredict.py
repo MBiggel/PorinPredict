@@ -145,7 +145,7 @@ def run_diamond(input,temp_dir_diamond,diamond_result,database_path_diamond,pref
     # checking if size of output is 0
     if os.stat(diamond_result).st_size == 0:
         with open(diamond_result, "w") as file:
-            file.write("missing")          
+            file.write("no hit")          
     
     # checking if more than one porin detected; keep hit with lowest Evalue
     df_diamond = pd.read_csv(diamond_result, sep = "\t", header=None)
@@ -174,7 +174,7 @@ def run_blastn(input,blast_result,temp_dir_blastn,database_path_blastn,prefix,ou
     # checking if size of output is 0
     if os.stat(blast_result).st_size == 0:
         with open(blast_result, "w") as file:
-            file.write("missing" + "\t" + prefix + "\n")
+            file.write("no hit" + "\t" + prefix + "\n")
     else:        
         # keep hit with lowest Evalue
         out_blastn = pd.read_csv(blast_result, sep = "\t", header=None).sort_values(by = [13], ascending = True).head(1) 
