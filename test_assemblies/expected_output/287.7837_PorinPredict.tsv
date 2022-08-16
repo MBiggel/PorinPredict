@@ -1,2 +1,2 @@
-"Assembly ID"	"oprD promoter completeness"	"OprD variant hit"	"OprD coding region"	"variant -- aligned query length/subject length *100 -- subject identity"	"Missense/nonsense mutation"	"PorinPredict classification"
-287.7837	"complete_100%"	"OprD_1"	"intact - exact match"	"OprD_1--100--100%"	NA	"OprD intact"
+"Assembly ID"	"oprD promoter completeness"	"oprD nucleotide sequence alignment coverage "	"OprD variant hit (AA level)"	"OprD coding region classification (AA level)"	"variant -- aligned query length/subject length *100 -- subject identity (AA level)"	"Missense/nonsense mutation"	"PorinPredict classification"
+287.7837	"complete_100%"	"1326/1326 (100%)"	"OprD_1"	"intact - exact match"	"OprD_1--100--100%"	NA	"OprD intact"

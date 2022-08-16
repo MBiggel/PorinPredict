@@ -7,11 +7,12 @@ suppressMessages(library(Biostrings))
 args <- commandArgs(trailingOnly = TRUE)
 
 # Import Diamond and Blastn results
-df = read.table(args[2],sep="\t",header=FALSE)
+df = read.table(args[3],sep="\t",header=FALSE)
+dfn = read.table(args[2],sep="\t",header=FALSE)
 dfp = read.table(args[1],sep="\t",header=FALSE)
 
 # Define output
-outfile = paste(args[4],args[3],"_PorinPredict.tsv",sep="")
+outfile = paste(args[5],args[4],"_PorinPredict.tsv",sep="")
 
 ### Classification OprD CDS
 # Diamond: no hit
@@ -135,17 +136,33 @@ if(dfp[1,1] == "no hit") {
     df$promoter2 = "incomplete"
 }}
 
+### Presence OprD nucleotide sequence
+if(dfn[1,1] == "no hit") {
+  names(dfn) = c("result_oprD_nuc","Assembly")
+  df$oprD_nuc = "no hit"
+
+  } else {
+  names(dfn) = c('qseqid','sseqid','slen','pident','qcovs','length',
+                 'mismatch','gaps','gapopen','qstart','qend','sstart',
+                 'send','evalue','bitscore','Assembly')
+  
+  coverage = dfn$length / dfn$slen * 100
+  df$oprD_nuc = paste(dfn$length,"/",dfn$slen," (",round(coverage,2),"%)",sep="")
+}
+
 ### Summarize
 if(df$result_CDS == "intact - exact match" && df$promoter2 == "complete") {
   df$"PorinPredict" = "OprD intact"
 } else if(df$result_CDS == "intact - missense mutation" && df$promoter2 == "complete") {
   df$"PorinPredict" = "OprD intact but rare AA substitution"
+} else if(df$oprD_nuc == "no hit" && df$promoter == "no hit") {
+  df$"PorinPredict" =  "WARNING: OprD nucleotide coding and promoter sequences not detected. Check species affiliation and assembly quality."
 } else {
   df$"PorinPredict" = "OprD inactivated"
 }
 
-out = df[,c("Assembly","promoter","Subject ID","result_CDS","Allele","Mutation","PorinPredict")]
-names(out) = c("Assembly ID","oprD promoter completeness","OprD variant hit","OprD coding region","variant -- aligned query length/subject length *100 -- subject identity","Missense/nonsense mutation","PorinPredict classification")
+out = df[,c("Assembly","promoter","oprD_nuc","Subject ID","result_CDS","Allele","Mutation","PorinPredict")]
+names(out) = c("Assembly ID","oprD promoter completeness","oprD nucleotide sequence alignment coverage ","OprD variant hit (AA level)","OprD coding region classification (AA level)","variant -- aligned query length/subject length *100 -- subject identity (AA level)","Missense/nonsense mutation","PorinPredict classification")
 
 write.table(out,outfile,sep="\t",row.names = FALSE)
 

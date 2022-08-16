@@ -55,7 +55,7 @@ for i in /path/to/input_directory/*.fasta; do /path/to/porinpredict.py -i $i -o 
 
 Assemblies for a test run are included in the repository folder PorinPredict/test_assemblies:
 ```
-for i in ./test_assemblies/*.fasta; do ./PorinPredict.py -i $i -o test_run --summarize ; done
+for i in ./test_assemblies/*.fasta; do ./porinpredict.py -i $i -o test_run --summarize -t 8; done
 ```
 
 ## Output Files

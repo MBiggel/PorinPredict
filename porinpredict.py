@@ -76,7 +76,8 @@ def main(args=None):
     porinpredict_path = os.path.dirname(porinpredict_path) + "/"
 
     database_path_diamond = porinpredict_path + r"/db/PA_OprD"
-    database_path_blastn = porinpredict_path + r"/db/PA_oprD_promoter_200bp_plus_10.fasta"
+    database_path_blastn_oprd = porinpredict_path + r"/db/PA_oprD.fasta"
+    database_path_blastn_prom = porinpredict_path + r"/db/PA_oprD_promoter_200bp_plus_10.fasta"
     
     # get prefix and output arguments
     prefix = input.split("/")[-1].strip()
@@ -92,23 +93,23 @@ def main(args=None):
     if not os.path.isdir(outdir):
         os.mkdir(outdir)
         
-    # create temporary directory for CDS analysis
+    # create directories for raw output and log files
     if not os.path.isdir(outdir + "temp_dir_diamond"):
         os.makedirs(outdir + "temp_dir_diamond/")
-    
-    # create temporary directory for promoter analysis
-    if not os.path.isdir(outdir + "temp_dir_blastn"):
-        os.makedirs(outdir + "temp_dir_blastn/")
-        
-    # create directory for log files
+    if not os.path.isdir(outdir + "temp_dir_blastn_oprd"):
+        os.makedirs(outdir + "temp_dir_blastn_oprd/")
+    if not os.path.isdir(outdir + "temp_dir_blastn_prom"):
+        os.makedirs(outdir + "temp_dir_blastn_prom/")
     if not os.path.isdir(outdir + "logs"):
         os.makedirs(outdir + "logs/")    
     
     # path to results directory
-    temp_dir_blastn = outdir + "temp_dir_blastn/"
+    temp_dir_blastn_prom = outdir + "temp_dir_blastn_prom/"
+    temp_dir_blastn_oprd = outdir + "temp_dir_blastn_oprd/"
     temp_dir_diamond = outdir + "temp_dir_diamond/"
     
-    blast_result = temp_dir_blastn + prefix + '.tsv'
+    blast_result_prom = temp_dir_blastn_prom + prefix + '.tsv'
+    blast_result_oprd = temp_dir_blastn_oprd + prefix + '.tsv'
     diamond_result = temp_dir_diamond+prefix+'.tsv'
     
     # initialize log file
@@ -122,8 +123,9 @@ def main(args=None):
     logging.info(now().strftime("%Y-%m-%d %H:%M"))
 
     run_diamond(input,temp_dir_diamond,diamond_result,database_path_diamond,prefix,outdir,args.threads)
-    run_blastn(input,blast_result,temp_dir_blastn,database_path_blastn,prefix,outdir,args.threads)
-    run_R(blast_result,diamond_result,prefix,outdir,porinpredict_path)
+    run_blastn_prom(input,blast_result_prom,temp_dir_blastn_prom,database_path_blastn_prom,prefix,outdir,args.threads)
+    run_blastn_oprd(input,blast_result_oprd,temp_dir_blastn_oprd,database_path_blastn_oprd,prefix,outdir,args.threads)
+    run_R(blast_result_prom,blast_result_oprd,diamond_result,prefix,outdir,porinpredict_path)
     
     if args.summarize == True:
         run_summarize(outdir,prefix)
@@ -162,36 +164,59 @@ def run_diamond(input,temp_dir_diamond,diamond_result,database_path_diamond,pref
         
     return diamond_result
     
-def run_blastn(input,blast_result,temp_dir_blastn,database_path_blastn,prefix,outdir,threads):
+def run_blastn_prom(input,blast_result_prom,temp_dir_blastn_prom,database_path_blastn_prom,prefix,outdir,threads):
     
-    blastn_command = ['blastn','-db',database_path_blastn,'-query',input,'-out',blast_result,'-perc_identity','95','-outfmt',"6 qseqid sseqid slen pident qcovs length mismatch gaps gapopen qstart qend sstart send evalue bitscore",'-max_target_seqs','10','-evalue','1E-20','-culling_limit','1','-num_threads',str(threads)]
+    blastn_prom_command = ['blastn','-db',database_path_blastn_prom,'-query',input,'-out',blast_result_prom,'-perc_identity','95','-outfmt',"6 qseqid sseqid slen pident qcovs length mismatch gaps gapopen qstart qend sstart send evalue bitscore",'-max_target_seqs','10','-evalue','1E-20','-culling_limit','1','-num_threads',str(threads)]
+    blastn = subprocess.run(blastn_prom_command)
     
-    blastn = subprocess.run(blastn_command)
-    
-    logging.info("Running Blastn: " + str(blastn_command).replace(',',"").replace('\'',""))
+    logging.info("Running blastn promoter sequence: " + str(blastn_prom_command).replace(',',"").replace('\'',""))
     print()
     
     # checking if size of output is 0
-    if os.stat(blast_result).st_size == 0:
-        with open(blast_result, "w") as file:
+    if os.stat(blast_result_prom).st_size == 0:
+        with open(blast_result_prom, "w") as file:
             file.write("no hit" + "\t" + prefix + "\n")
     else:        
-        # keep hit with lowest Evalue
-        out_blastn = pd.read_csv(blast_result, sep = "\t", header=None).sort_values(by = [13], ascending = True).head(1) 
+        # keep hit with lowest Evalue (highest bitscore if same Evalue)
+        out_blastn = pd.read_csv(blast_result_prom, sep = "\t", header=None).sort_values(by = [14], ascending = False).sort_values(by = [13], ascending = True).head(1) 
         
         # add column with prefix
         out_blastn["ID"] = [prefix]
     
         # write to tsv
-        out_blastn.to_csv(blast_result,sep='\t',index=False,header=False)
+        out_blastn.to_csv(blast_result_prom,sep='\t',index=False,header=False)
+   
+    return blast_result_prom
+
+def run_blastn_oprd(input,blast_result_oprd,temp_dir_blastn_oprd,database_path_blastn_oprd,prefix,outdir,threads):
     
-    return blast_result
+    blastn_oprd_command = ['blastn','-db',database_path_blastn_oprd,'-query',input,'-out',blast_result_oprd,'-perc_identity','90','-outfmt',"6 qseqid sseqid slen pident qcovs length mismatch gaps gapopen qstart qend sstart send evalue bitscore",'-max_target_seqs','10','-evalue','1E-20','-culling_limit','1','-num_threads',str(threads)]
+    blastn = subprocess.run(blastn_oprd_command)
     
-def run_R(blast_result,diamond_result,prefix,outdir,porinpredict_path):
+    logging.info("Running blastn oprD: " + str(blastn_oprd_command).replace(',',"").replace('\'',""))
+    print()
+    
+    # checking if size of output is 0
+    if os.stat(blast_result_oprd).st_size == 0:
+        with open(blast_result_oprd, "w") as file:
+            file.write("no hit" + "\t" + prefix + "\n")
+    else:        
+        # keep hit with lowest Evalue (highest bitscore if same Evalue)
+        out_blastn = pd.read_csv(blast_result_oprd, sep = "\t", header=None).sort_values(by = [14], ascending = False).sort_values(by = [13], ascending = True).head(1) 
+        
+        # add column with prefix
+        out_blastn["ID"] = [prefix]
+    
+        # write to tsv
+        out_blastn.to_csv(blast_result_oprd,sep='\t',index=False,header=False)
+   
+    return blast_result_oprd
+    
+def run_R(blast_result_prom,blast_result_oprd,diamond_result,prefix,outdir,porinpredict_path):
     logging.info("Running porinpredict.R")
     print()
     script_path = porinpredict_path + "porinpredict.R"
-    args = [blast_result,diamond_result,prefix,outdir]
+    args = [blast_result_prom,blast_result_oprd,diamond_result,prefix,outdir]
     cmd = ["Rscript", script_path] + args
     
     subprocess.run(cmd)      
