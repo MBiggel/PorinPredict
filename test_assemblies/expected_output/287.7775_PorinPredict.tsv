@@ -1,2 +1,2 @@
-"Assembly ID"	"oprD promoter completeness"	"oprD nucleotide sequence alignment coverage "	"OprD variant hit (AA level)"	"OprD coding region classification (AA level)"	"variant -- aligned query length/subject length *100 -- subject identity (AA level)"	"Missense/nonsense mutation"	"PorinPredict classification"
-287.7775	"complete_100%"	"1326/1326 (100%)"	"OprD_1"	"premature stop"	"OprD_1--100--99.8%"	"W415X"	"OprD inactivated"
+"Assembly ID"	"oprD promoter integrity (alignment coverage)"	"oprD nucleotide sequence alignment coverage "	"OprD variant hit (AA level)"	"OprD alignment coverage (AA level)"	"OprD sequence identity (%; AA level)"	"OprD integrity (AA level)"	"Missense/nonsense mutations"	"PorinPredict final classification"
+287.7775	"complete (100%)"	"1326/1326 (100%)"	"OprD_1"	"441/441 (100%)"	99.8	"intact - missense mutation"	"W415*"	"OprD intact but rare AA substitution"

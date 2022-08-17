@@ -1,6 +1,6 @@
-Assembly ID	oprD promoter completeness	oprD nucleotide sequence alignment coverage 	OprD variant hit (AA level)	OprD coding region classification (AA level)	variant -- aligned query length/subject length *100 -- subject identity (AA level)	Missense/nonsense mutation	PorinPredict classification
-287.12732	incomplete_66.67%	1332/1332 (100%)	OprD_6	intact - exact match	OprD_6--100--100%		OprD inactivated
-287.7775	complete_100%	1326/1326 (100%)	OprD_1	premature stop	OprD_1--100--99.8%	W415X	OprD inactivated
-287.7799	complete_100%	1326/1326 (100%)	OprD_1	intact - missense mutation	OprD_1--100--99.8%	S278P	OprD intact but rare AA substitution
-287.7837	complete_100%	1326/1326 (100%)	OprD_1	intact - exact match	OprD_1--100--100%		OprD intact
-287.785	complete_100%	1332/1332 (100%)	OprD_2	incomplete	OprD_2--71.6--100%		OprD inactivated
+Assembly ID	oprD promoter integrity (alignment coverage)	oprD nucleotide sequence alignment coverage 	OprD variant hit (AA level)	OprD alignment coverage (AA level)	OprD sequence identity (%; AA level)	OprD integrity (AA level)	Missense/nonsense mutations	PorinPredict final classification
+287.12732	incomplete (66.67%)	1332/1332 (100%)	OprD_6	443/443 (100%)	100.0	intact - exact match		OprD inactivated
+287.7775	complete (100%)	1326/1326 (100%)	OprD_1	441/441 (100%)	99.8	intact - missense mutation	W415*	OprD intact but rare AA substitution
+287.7799	complete (100%)	1326/1326 (100%)	OprD_1	441/441 (100%)	99.8	intact - missense mutation	S278P	OprD intact but rare AA substitution
+287.7837	complete (100%)	1326/1326 (100%)	OprD_1	441/441 (100%)	100.0	intact - exact match		OprD intact
+287.785	complete (100%)	1331/1332 (99.92%)	OprD_2	317/443 (71.6%)	100.0	frameshifted		OprD inactivated
