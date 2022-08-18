@@ -44,14 +44,13 @@ mismatches <- function(query, ref) {
            Reference_AA=as.character(PatternSubstring),
            Sample_AA=as.character(SubjectSubstring)) %>% 
     select(ID, Reference_AA, Sample_AA, Pos)
-} 
+}
 
 ### Presence oprD nucleotide sequence
 if(dfn[1,1] == "no hit") {
   df$oprD_nuc = "no hit"
   df$result_CDS = "no hit"
-  
-} else { 
+  } else {
   if(dfn$length > dfn$slen) {
     coverage = dfn$length / dfn$slen * 100
     df$oprD_nuc = paste(dfn$length,"/",dfn$slen," (",round(coverage,2),"%)",sep="")       
@@ -60,22 +59,17 @@ if(dfn[1,1] == "no hit") {
     df$oprD_nuc = paste((dfn$length - dfn$gaps),"/",dfn$slen," (",round(coverage,2),"%)",sep="")       
   }
   
-  if(dfn$gaps %in% c(1,2,4,5,7,8,10,11)){
-    df$gap = "frameshifted"
-  } else if(dfn$gaps %in% c(3,6,9,12) && dfn$gapopen == 1) {
-    df$gap = "in-frame indel"
-  } else if(dfn$gapopen > 1) {
-    df$gap = "multiple indels"	
+  if(dfn$gaps %in% c(1,2,4,5,7,8,10,11) && (dfn$length <= (dfn$slen + 12)) && ((dfn$length - dfn$gaps) >= (dfn$slen - 12))) {
+    df$gap = "frameshift indel"
+  } else if(dfn$gaps %in% c(3,6,9,12) && dfn$gapopen == 1 && dfn$length <= (dfn$slen + 12) & (dfn$length - dfn$gaps) >= (dfn$slen - 12)) {
+    df$gap = "in-frame indel"	
   } else if(dfn$length > (dfn$slen + 12)) {
     df$gap = "large insertion"
-  } else if((dfn$length - dfn$gaps) < (dfn$slen - 12) && dfn$gapopen > 0) {
-    df$gap = "large deletion"
-  } else if((dfn$length - dfn$gaps) && dfn$gaps == 0) {
+  } else if((dfn$length - dfn$gaps) < (dfn$slen - 12)) {
     df$gap = "truncated"
   } else {
-    df$gap = "other indel"
-  }  
-}
+    df$gap = "multiple indels/other rearrangement"
+  }}
 
 ### Classification OprD CDS
 # Diamond: no hit
@@ -97,7 +91,7 @@ if(df[1,1] == "no hit") {
                             df$aln_length,df$aln_length) == "*"
     
   # Presence premature stop (no stop -> loc_stop = -1)
-  loc_stop = unlist(gregexpr("\\*", df$aln_length))[1]
+  loc_stop = unlist(gregexpr("\\*", df$"Aligned part of query sequence (translated)"))[1]
   df$Premature_stop = (loc_stop != df$aln_length) && (loc_stop != -1)
     
   # OprD completeness
@@ -137,7 +131,7 @@ if(df[1,1] == "no hit") {
       
   } else if(df$Premature_stop == TRUE) {
     df$result_CDS = "premature stop" 
-    df$Mutation = paste0(substr(df$"Subject sequence",loc_stop,loc_stop),loc_stop,"X",sep="")
+    df$Mutation = paste0(substr(df$"Subject sequence",loc_stop,loc_stop),loc_stop,"*",sep="")
       
   } else if(df$OprD_complete == TRUE && df$Start_Met == FALSE) {
     df$result_CDS = "start loss"
