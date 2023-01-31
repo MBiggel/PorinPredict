@@ -39,7 +39,7 @@ conda env create -n porinpredict --file porinpredict.yaml
 conda activate porinpredict
 /path/to/porinpredict.py --version
 ```
-For a faster installation, use [mamba](https://github.com/mamba-org/mamba) instead of conda.
+
 
 ## Run PorinPredict
 
@@ -67,15 +67,15 @@ Filename | Description
 
 ## Considerations
 
-* PorinPredict relies on high-quality genome assemblies. Before running PorinPredict, we recommend to confirm *Pseudomonas aeruginosa* species affiliation using e.g. [rMLST](https://pubmlst.org/species-id) and to assess the assembly quality using [CheckM](https://github.com/Ecogenomics/CheckM/wiki), [QUAST](http://quast.sourceforge.net/), or similar tools. In low-quality assemblies, absence of *oprD* may be caused by technical reasons such as an insufficient coverage. In our study, the following criteria were used to define low-quality assemblies: N50 < 15 kb, assembly length <5.9 Mb, CheckM completeness <97 %, or CheckM contamination >3 %.
+* PorinPredict relies on high-quality genome assemblies. Before running PorinPredict, we recommend to confirm *Pseudomonas aeruginosa* species affiliation using e.g. [rMLST](https://pubmlst.org/species-id) and to assess the assembly quality using [CheckM](https://github.com/Ecogenomics/CheckM/wiki), [QUAST](http://quast.sourceforge.net/), or similar tools. In low-quality assemblies, absence of *oprD* may be caused by technical reasons such as an insufficient coverage.
 
-* In addition to inactivating mutations in OprD and promoter disruptions, PorinPredict reports missense mutations. Specific amino acid substitutions associated with carbapenem resistance are described in our publication: LINK
+* In addition to inactivating mutations in OprD and promoter disruptions, PorinPredict reports missense mutations. Specific amino acid substitutions associated with carbapenem resistance are described in our [publication](https://doi.org/10.1128/spectrum.03588-22)
 
 * 15 intact OprD variants are currently included in the database. With the increasing number of available genomes, the database will be supplemented with additional variants of carbapenem-susceptible isolates.
 
 ## Citation
 
-LINK
+Biggel, M., Johler, S., Roloff, T., Tschudin-Sutter, S., Bassetti, S., Siegemund, M., Egli, A., Stephan, R., & Seth-Smith, H. M. B. (2023). PorinPredict: In Silico Identification of OprD Loss from WGS Data for Improved Genotype-Phenotype Predictions of *P. aeruginosa* Carbapenem Resistance. Microbiology spectrum, e0358822. https://doi.org/10.1128/spectrum.03588-22
 
 ## License
 
